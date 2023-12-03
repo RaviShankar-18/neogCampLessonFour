@@ -7,14 +7,39 @@ let btnTranslate = document.querySelector("#myButton");
 let txtInput = document.querySelector("#myText");
 let outputDiv = document.querySelector("#output");
 
-function clickHandler(){
-    outputDiv.innerText = "translated: " + txtInput.value
-    
-   
- 
+//  let serverURL = "https://lessonfourapi.tanaypratap.repl.co/translate/yoda.json";
+
+let serverURL = "https://api.funtranslations.com/translate/minion.json"
+
+function getTranslationURL(inputText){
+    return serverURL + "?" + "text=" + inputText;
+
 }
 
+function errorHandler(error){
+ console.log("error occured",error);
+
+}
+
+function clickHandler(){
+    // calling server for processing
+    fetch(getTranslationURL(txtInput.value))
+    .then(function responseHandler(response){
+     return response.json()
+    })
+    .then(function logJSON(json){
+    //  console.log(json)
+     let translatedText = json.contents.translated;
+     outputDiv.innerText = translatedText;
+     })
+     .catch(errorHandler)
+    
+
+    }
+
 btnTranslate.addEventListener("click", clickHandler);
+
+
 
 
 
